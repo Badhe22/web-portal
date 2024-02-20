@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Link, Routes, Route, Navigate } from "react-router-dom";
 import Register from "./Register";
 import Login from "./Login";
-
+ 
 function Navbar() {
   const [isRegisterVisible, setRegisterVisible] = useState(false);
   const [isLoginVisible, setLoginVisible] = useState(false);
@@ -106,7 +106,7 @@ function Navbar() {
                     className="nav-link"
                     style={{ color: "Black" }}
                     to="/login"
-                    onClick={() => {
+                    onClick={(handleLogin) => {
                       setLoginVisible(true);
                       setRegisterVisible(false);
                     }}
@@ -120,7 +120,6 @@ function Navbar() {
           </ul>
         </div>
       </nav>
-
       
     </div>
   );
