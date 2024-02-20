@@ -21,31 +21,46 @@ app.use(cors(
 //for database connectivity
 mongoose.connect("mongodb://127.0.0.1:27017/users");
 
-app.post("/login", (req, res) => {
+app.post('/register', (req, res)=>{
+    // To post / insert data into database
+
     const {email, password} = req.body;
-    usersModel.findOne({email : email})
+    usersModel.findOne({email: email})
     .then(user => {
-        if(user) {
-            if(user.password === password){
-                res.json("Success")
-            }else{
-                res.json("The password is incorrect")
-            }
-        }else{
-            res.json("No record existed")
+        if(user){
+            res.json("Already registered")
+        }
+        else{
+            usersModel.create(req.body)
+            .then(user => res.json(user))
+            .catch(err => res.json(err))
         }
     })
+    
 })
 
 app.get("/", (req, res) => {
     res.send("Server is running successfully!");
 });
-
-//for creating user model in mongodb
-app.post("/register", (req, res) => {
-  usersModel.create(req.body)
-    .then(user => res.json(user))
-    .catch(err => res.json(err))
+app.post('/login', (req, res)=>{
+    // To find record from the database
+    const {email, password} = req.body;
+    usersModel.findOne({email: email})
+    .then(user => {
+        if(user){
+            // If user found then these 2 cases
+            if(user.password === password) {
+                res.json("Success");
+            }
+            else{
+                res.json("Wrong password");
+            }
+        }
+        // If user not found then 
+        else{
+            res.json("No records found! ");
+        }
+    })
 })
 
 
