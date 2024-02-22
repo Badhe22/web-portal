@@ -9,23 +9,32 @@ const Login = () => {
     const [password, setPassword] = useState();
     const navigate = useNavigate();
 
-    const handleLogin = (event) => {
+    const handleLogin = async (event) => {
         event.preventDefault();
-        
-        axios.post( 'http://localhost:3001/login', {email, password},{withCredentials: false})
-        .then(result => {
-            console.log(result);
-            if(result.data === "Success"){
-                console.log("Login Success");
-                alert('Login successful!')
+
+        try {
+            const response = await axios.post('http://localhost:3001/login', { email, password });
+
+            if (response.data.message === "Success") {
+                alert('Login successful!');
+                localStorage.setItem('token', response.data.token);
                 navigate('/home');
+            } else {
+                alert('Incorrect email or password! Please try again.');
             }
-            else{
-                alert('Incorrect password! Please try again.');
+        } catch (error) {
+            if (error.response && error.response.data && error.response.data.message) {
+                alert(`Login failed: ${error.response.data.message}`);
+            } else {
+                alert("Login failed. Please try again later.");
             }
-        })
-        .catch(err => console.log(err));
-    }
+            console.error(error);
+        }
+    };
+
+    
+
+
 
 
     return (

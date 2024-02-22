@@ -8,7 +8,7 @@ const mongoose = require('mongoose')
     password:String
  })
 
- const usersModel = mongoose.model("users", UsersSchema)
+ const usersModel = mongoose.model("register", UsersSchema)
  
  module.exports = usersModel
  
